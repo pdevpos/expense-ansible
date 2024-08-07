@@ -16,4 +16,4 @@
   tasks:
     - name: get priorities
       ansible.builtin.debug:
-        msg: "Hello this {{Course}} and {{Trainer}}"
+        msg: "Hello this {{Course}} , {{Duration}} and {{Trainer}} "
