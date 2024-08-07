@@ -16,7 +16,7 @@
   tasks:
     - name: get priorities
       vars:
-        Course: DEvops
+        Course: Java
         Trainer: Siva
       ansible.builtin.debug:
-        msg: "Hello this {{course}} and {{trainer}}"
+        msg: "Hello this {{Course}} and {{Trainer}}"
