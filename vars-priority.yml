@@ -1,0 +1,22 @@
+- name: variables priority
+  hosts: localhost
+  vars:
+    Course: DEvops
+    Trainer: Raghu
+    Duration: 123hrs
+  vars_files:
+    - vars.yml
+  vars_prompt:
+    - name: username
+      prompt: Enter username
+      private: false
+    - name: password
+      prompt: Enter password
+      private: true
+  tasks:
+    - name: get priorities
+      vars:
+        Course: DEvops
+        Trainer: Siva
+      ansible.builtin.debug:
+        msg: "Hello this {{course}} and {{trainer}}"
