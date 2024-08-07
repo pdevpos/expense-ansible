@@ -1,0 +1,10 @@
+- name: task level variables
+  hosts: localhost
+  vars:
+    Course: Java
+  tasks:
+    - name: display task level variables
+      vars:
+        Course: Devops
+      ansible.builtin.debug:
+        msg: "Hello Course is {{Course}}"
