@@ -3,4 +3,4 @@
   tasks:
     - name: display variables from arguments
       ansible.builtin.debug:
-        msg: "Hello {{username}} and {{password}}"
+        msg: "Hello {{Course}} ,{{Trainer}} and {{Duration}}"

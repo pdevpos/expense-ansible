@@ -7,12 +7,7 @@
   vars_files:
     - vars.yml
   vars_prompt:
-    - name: username
-      prompt: Enter username
-      private: false
-    - name: password
-      prompt: Enter password
-      private: true
+
   tasks:
     - name: get priorities
       ansible.builtin.debug:
