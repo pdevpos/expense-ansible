@@ -15,8 +15,5 @@
       private: true
   tasks:
     - name: get priorities
-      vars:
-        Course: Java
-        Trainer: Siva
       ansible.builtin.debug:
         msg: "Hello this {{Course}} and {{Trainer}}"
