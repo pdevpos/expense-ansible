@@ -7,7 +7,15 @@
   vars_files:
     - vars.yml
   vars_prompt:
-    - 01-variables-prompt.yml
+    - name: Course
+      prompt: please enter Course
+      private: false
+    - name: Duration
+      prompt: please enter Duration
+      private: true
+    - name: Trainer
+      prompt: please enter Trainer
+      private: true
   tasks:
     - name: get priorities
       vars:
