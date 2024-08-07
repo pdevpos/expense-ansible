@@ -19,8 +19,8 @@
   tasks:
     - name: get priorities
       vars:
-        Course: Angular
-        Trainer: JS
-        Duration: 123hrs
+#        Course: Angular
+#        Trainer: JS
+#        Duration: 123hrs
       ansible.builtin.debug:
         msg: "Hello this {{Course}} , {{Duration}} and {{Trainer}} "
