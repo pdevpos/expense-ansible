@@ -7,8 +7,12 @@
   vars_files:
     - vars.yml
   vars_prompt:
-
+    - 01-variables-prompt.yml
   tasks:
     - name: get priorities
+      vars:
+        Course: Angular
+        Trainer: JS
+        Duration: 123hrs
       ansible.builtin.debug:
         msg: "Hello this {{Course}} , {{Duration}} and {{Trainer}} "

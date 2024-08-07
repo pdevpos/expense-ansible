@@ -1,0 +1,3 @@
+1.arguments
+ ansible-playbook -i inventory.ini -e ansible_user=ec2-user -e ansible_password=DevOps321 vars-priority.yml -e Course=C -e Trainer=Raghu -e Duration=135hrs
+2.
