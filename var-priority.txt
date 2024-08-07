@@ -4,3 +4,4 @@
 3.variables from files
 4.prompt
 5.play level vars
+6.inventory vars
