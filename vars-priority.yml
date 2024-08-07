@@ -1,9 +1,9 @@
 - name: variables priority
   hosts: localhost
   vars:
-    Course: DEvops
-    Trainer: Raghu
-    Duration: 123hrs
+#    Course: DEvops
+#    Trainer: Raghu
+#    Duration: 123hrs
 #  vars_files:
 #    - vars.yml
 #  vars_prompt:
