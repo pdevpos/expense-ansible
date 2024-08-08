@@ -4,7 +4,5 @@
   tasks:
     - name: list of items
       ansible.builtin.dnf:
-        name: "{{ item.name }}"
+        name: nginx
         state: absent
-      loop:
-        - nginx
