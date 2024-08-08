@@ -1,11 +1,11 @@
 - name: list to dict items
   hosts: localhost
   vars:
-    mylist:
-      - shell
-      - ansible
-      - devops
+    mydict:
+      Course: DevOps
+      Trainer: Siva
+      Duration: 123hrs
   tasks:
     - name: convert list to  dict items
       ansible.builtin.debug:
-        msg: "{{ mylist | dict2items }}"
+        msg: "{{ mydict | dict2items }}"
