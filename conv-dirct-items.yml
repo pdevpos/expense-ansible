@@ -1,0 +1,11 @@
+- name: list to dict items
+  hosts: localhost
+  vars:
+    mylist:
+      - shell
+      - ansible
+      - devops
+  tasks:
+    - name: convert list to  dict items
+      ansible.builtin.debug:
+        msg: "{{ mylist | dict2items }}"
