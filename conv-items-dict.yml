@@ -1,0 +1,12 @@
+- name: list to dict items
+  hosts: localhost
+  vars:
+    mylist:
+      - { "key": "Course","value": "DevOps" },
+      - { "key": "Trainer","value": "Siva" },
+      - { "key": "Duration","value": "123hrs" }
+
+  tasks:
+    - name: convert list to  dict items
+      ansible.builtin.debug:
+        msg: "{{ mylist | items2dict }}"
