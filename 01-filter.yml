@@ -3,4 +3,4 @@
   tasks:
     - name: filter data
       ansible.builtin.debug:
-        msg: "{{ course | default(shell) }}"
+        msg: "{{ course | default('shell') }}"
