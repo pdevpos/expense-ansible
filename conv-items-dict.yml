@@ -2,8 +2,8 @@
   hosts: localhost
   vars:
     mylist:
-      - {key: 'Course',value: 'DevOps' },
-      - {key: 'Trainer',value: 'Siva' },
+      - {key: 'Course',value: 'DevOps' }
+      - {key: 'Trainer',value: 'Siva' }
       - {key: 'Duration',value: '123hrs' }
 
   tasks:
