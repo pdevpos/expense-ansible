@@ -1,0 +1,8 @@
+- name: check conditions
+  hosts: localhost
+  tasks:
+    - name: check user expense exists or not
+      ansible.builtin.command: id expense
+    - name: display message
+      ansible.builtin.debug:
+        msg: "Hello devops"
