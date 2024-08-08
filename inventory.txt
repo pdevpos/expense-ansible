@@ -7,7 +7,8 @@
  [all:children]
  web
  localhost
-
+* to communicate with remote nodes we use this command:
+ansible -i 172.31.17.151, all -e ansible_user=ec2-user -e ansible_password=DevOps321 -m ping
  * ansible  -i inventory.ini localhost  --list-hosts
 
  Install nginx and execute this nginx in ansible-playbook:
@@ -211,5 +212,382 @@
      AWS: 2
      Docker: 1
  RealProject: true #boolean
+
+
+
+DataTypes:
+==========
+- name: datatypes
+  hosts: localhost
+  vars:
+    Course: Devops with AWS #string
+    Tools: #list
+    - Linux
+    - Shell
+    - Ansible
+    Experience: # map or dictionary
+      Devops: 3 #number
+      AWS: 2
+      Docker: 1
+    RealProject: true #boolean
+  tasks:
+  - name: print variables
+    ansible.builtin.debug:
+       msg: "Course: {{Course}}, Tools covered: {{Tools}},Experience is {{Experience}} , is real project : {{Real Project}}"
+
+
+Conditions:
+===========
+Ansible does not guarantee modules/collections for everything in linux.
+- name: check user exists or not
+  hosts: localhost
+  become: yes
+  tasks:
+    - name: user exists or not
+      ansible.builtin.command: id expense
+    - name: display message
+      ansible.builtin.debug:
+        msg: "Hello devops"
+
+ In the above code "id expense " is to check a user expense or not.
+ if user doesn't exists , will get an error.
+ to ignore error, use "ignore_errors"
+ - name: check user exists or not
+   hosts: localhost
+   become: yes
+   tasks:
+     - name: user exists or not
+       ansible.builtin.command: id expense
+       ignore_errors: true
+     - name: display message
+       ansible.builtin.debug:
+         msg: "Hello devops"
+
+
+ How can you run a command and take the output into a variable?
+ ===============================================================
+ - name: check user exists or not
+    hosts: localhost
+    become: yes
+    tasks:
+      - name: user exists or not
+        ansible.builtin.command: id expense
+        register: USER
+        ignore_errors: true
+
+     - name: dipslay USER output
+       ansible.builtin.debug:
+         msg: "user info:{{USER}}"
+
+     - name: create user
+       ansible.builtin.command: useradd expense
+       when: USER.rc!=0 #condition
+
+
+      - name: display message
+        ansible.builtin.debug:
+          msg: "Hello devops"
+
+
+Ansible 26 video Quiz
+
+
+Ansible27:
+=========
+functions/filters
+ansible we cant create functions. we can use existing filters....
+filter = data transformation/manipulation
+to change string lower to upper or viceversa
+devops ----> DevOps
+aws ----> AWS
+
+* if a number less than 10, print less than 10
+otherwise print greater than equal to 10
+
+- name: check number
+  hosts: localhost
+  vars_prompt:
+  - name: number
+    prompt: please enter number
+    private: no
+  tasks:
+   -  name: number is less than 10
+      debug:
+        msg: "Given number {{number}} is less than 10"
+     when: number < 10
+
+   - name: number is greater than or equal to 10
+     debug:
+       msg: "Given number {{number}} is greater than 10"
+    when: number >= 10
+
+    in the  above code var_prompt data type is a text/string.
+    so entering any number is a string/text, so we need to convert
+    in ansible we use "filters".
+    Ansible is a strict, it can't automatically convert text into a number.
+    10 ---> text
+    ansible filters are useful.ansible developed in python.....
+    filter is denote with pipe symbol '|'
+    ansible filters
+    - name: check number
+      hosts: localhost
+      vars_prompt:
+      - name: number
+        prompt: please enter number
+        private: no
+      tasks:
+       -  name: number is less than 10
+          debug:
+            msg: "Given number {{number}} is less than 10"
+         when: number | int < 10
+
+       -  name: number is less than 10
+          debug:
+             msg: "Given number {{number}} is less than 10"
+             when: number | int > 10
+
+if we give text instead of number , ansible treat as 0
+
+02-filters.yaml:
+================
+- name: default value
+  hosts: localhost
+  tasks:
+  - name: print default value
+    ansible.builtin.debug:
+      msg: "{{Course}}"
+
+      to run the above code, will get an error like "undefined variable"
+      - name: default value
+        hosts: localhost
+        tasks:
+        - name: print default value
+          ansible.builtin.debug:
+            msg: "{{Course | default('Ansible') }}"
+
+            in the above code to set a default value
+
+      upper case:
+      ===========
+      - name: upper case
+        hosts: localhost
+        vars:
+          greeting: Hello,Good Morning"
+        tasks:
+        - name: convert into uppercase
+          ansible.builtin.debug:
+            msg: "{{ greeting | upper }}"
+
+    lower case:
+    ==========
+     - name: lower case
+        hosts: localhost
+        vars:
+          greeting: Hello,Good Morning"
+        tasks:
+        - name: convert into uppercase
+          ansible.builtin.debug:
+            msg: "{{ greeting | lower }}"
+
+
+ remove duplicates:
+ ====================
+  - name: remove duplicates
+ hosts: localhost
+ vars:
+   numbers: [1,2,3,4,4,5,5]
+ tasks:
+ - name: remove duplicate numbers
+   ansible.builtin.debug:
+     msg: "{{ numbers | unique }}"
+
+
+min and max:
+===========
+ - name: min and max
+hosts: localhost
+vars:
+  ages: [25,35,67,89]
+tasks:
+- name: get min age
+  ansible.builtin.debug:
+    msg: "{{ age | min }} , max age: {{ age | max }}"
+
+dictionary to items:
+==================
+here dictionary = map = key/value pair
+
+ - name: upper case
+    hosts: localhost
+    vars:
+      my_dict: # this is called as dictionary or map or key/value pairs
+        Course:
+        Trainer:
+        Duration:
+    tasks:
+    - name: convert dictionary to lists
+      ansible.builtin.debug:
+        msg: "{{ my_dict | dict2items }}"
+
+
+    in the above code convert map to lists.
+
+    items to dictionary:
+    =====================
+    - name: convert items to dict
+        hosts: localhost
+        vars:
+          my_list:
+          - {key: 'Course','value':'Ansible'}
+          - {key: 'Course','value':'Ansible'}
+          - {key: 'Course','value':'Ansible'}
+
+        tasks:
+        - name: convert dictionary to lists
+          ansible.builtin.debug:
+            msg: "{{ my_list | items2dict }}"
+
+
+ loops:
+ ======
+
+ - name: loops
+   hosts: localhost
+   tasks:
+     - name: get items
+       ansible.builtin.debug:
+         msg: "Hello {{ item }}"
+       loop:
+         - linux
+         - ansible
+         - shell
+
+   in the above code item is a fixed variable to get loop value one by one.
+
+
+   to install a package:
+   ====================
+   - name: install packages
+     hosts: localhost
+     tasks:
+      - name: install multiple packages
+        dnf: "{{item}}"
+          state: latest
+
+        loop:
+         - mysql
+         - nginx
+         - postfix
+
+   to install some packages and to remove some packages:
+   =====================================================
+
+    - name: install packages
+        hosts: localhost
+        tasks:
+         - name: install multiple packages
+           dnf: "{{item.name}}"
+             state: "{{item.state}}"
+
+           loop:
+            - {name: 'mysql',state: 'latest'}
+            - {name: 'nginx',state: 'absent'}
+            - {name: 'postfix',state: 'absent'}
+
+
+
+ expense project:
+ ===============
+ * create db instance in aws service
+ * go to this url: https://learndevopsonline.github.io/learndevopsonline/build/docs/Expense-Project-V2/backend
+ * create a repo for expense project
+ * create a yml files under expense project repo
+ * create route53 record
+ * add dns record in inventory.ini
+ * inventoty.ini:
+ ===============
+ [db]
+ db.pdevops72.online
+
+ db.yml:
+ =======
+ - name: configuration setup
+   hosts: db
+   become: yes
+    vars_prompt:
+    - name: mysql_root_password
+      prompt: Please enter root password
+      private: no
+   tasks:
+     - name: Install mysql-server
+       ansible.builtin.dnf:
+         name: mysql-server
+         state: installed
+
+     - name: start and enable mysql service
+       ansible.builtin.service:
+         name: mysqld
+         state: started
+         enabled: yes
+
+     Next, We need to change the default root password in order to start using the database service. Use password ExpenseApp@1 or any other as per your choice.
+
+     first time when we set the password , it will execute
+     when we run second time , will get an error like already password set, so for this we have check the mysql connection in mysql hosts
+# check password is already setup or not
+     - name: check DB connection
+        community.mysql.mysql_info:
+
+           login_user: root
+           login_password: "{{mysql_root_password}}"
+           login_host: db.pdevops72.online
+            filter: version
+           ignore_errors: true
+           register: mysql_connection_output
+
+
+       - name: receive output
+         ansible.builtin.debug:
+           msg: "{{ mysql_connection_output }}"
+
+
+           to check mysql-server installed or not , filter:version
+
+
+   * Ansible is developed in python.now we are connecting to mysql from ansible which is developed by python.
+   * dependencies for python to connect mysql servers.
+   * install nodejs dependencies
+   * pip: installing python dependencies
+
+   to install python packages related use "pip module"
+
+   - name: install python mysql dependencies
+     ansible.builtin.pip:
+      name:
+       - PyMySql
+       - cryptography
+     executable: pip3.9
+
+
+     * now setup connection:
+     ======================
+     - name: setup root password
+       ansible.builtin.command: mysql_secure_installation --set-root-pass {{mysql_root_password}}
+       when: mysql_connection_output.failed is true
+
+
+       * to check mysql installed or not use the following command in mysql remote hosts:
+       =================================================================================
+       mysql -h db.pdevops72.online -u root -pExpenseApp@1
+
+
+
+
+
+
+
+
+
+
 
 

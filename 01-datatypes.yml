@@ -1,0 +1,17 @@
+- name: check datatypes
+  hosts: localhost
+  vars:
+    greeting: Hello
+    tools:
+      - linux
+      - ansible
+      - shell
+    experience:
+      Devops: 3
+      aws: 2
+      java: 4
+    realProject: true
+  tasks:
+    - name: check datatypes
+      ansible.builtin.debug:
+        msg: "{{greeting}},{{tools}},{{experience}},{{realProject}}"
