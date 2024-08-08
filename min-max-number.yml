@@ -1,0 +1,13 @@
+- name: min and max
+  hosts: localhost
+  vars:
+    mylist: [ 24,35,11,76 ]
+  tasks:
+    - name: get min  value
+      ansible.builtin.debug:
+        msg: "{{ mylist | min }}"
+
+    - name: get max  value
+      ansible.builtin.debug:
+        msg: "{{ mylist | max }}"
+
