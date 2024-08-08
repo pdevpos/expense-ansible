@@ -7,4 +7,4 @@
   tasks:
     - name: get message
       ansible.builtin.debug:
-        msg: "{{ message }}"
+        msg: "{{ message | uppercase}}"
