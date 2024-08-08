@@ -4,6 +4,7 @@
     - name: check user expense exists or not
       ansible.builtin.command: id expense
       ignore_errors: true
+      register: USER
     - name: display message
       ansible.builtin.debug:
-        msg: "Hello devops"
+        msg: "{{USER}}"
