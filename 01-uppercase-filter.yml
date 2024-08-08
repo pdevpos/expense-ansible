@@ -1,0 +1,10 @@
+- name: uppercase with filters
+  hosts: localhost
+  vars_prompt:
+    - name: message
+      prompt: enter message
+      private: no
+  tasks:
+    - name: get message
+      ansible.builtin.debug:
+        msg: "{{ message }}"
