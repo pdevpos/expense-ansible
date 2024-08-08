@@ -3,7 +3,7 @@
   tasks:
     - name: check user expense exists or not
       ansible.builtin.command: id expense
+      ignore_errors: true
     - name: display message
       ansible.builtin.debug:
         msg: "Hello devops"
-      ignore_errors: true
