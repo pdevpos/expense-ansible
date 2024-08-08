@@ -6,3 +6,4 @@
       ansible.builtin.dnf:
         name: nginx
         state: absent
+        autoremove: yes
