@@ -5,6 +5,9 @@
       prompt: enter message
       private: no
   tasks:
-    - name: get message
+    - name: display message in uppercase
       ansible.builtin.debug:
         msg: "{{ message | upper }}"
+    - name: display message in lowercase
+      ansible.builtin.debug:
+        msg: "{{ message | lower }}"
