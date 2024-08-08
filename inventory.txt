@@ -288,7 +288,29 @@ Ansible does not guarantee modules/collections for everything in linux.
         ansible.builtin.debug:
           msg: "Hello devops"
 
-
+in the above register key USER contains the json data as follows:
+ok: [localhost] => {
+    "msg": {
+        "changed": true,
+        "cmd": [
+            "id",
+            "expense"
+        ],
+        "delta": "0:00:00.007526",
+        "end": "2024-08-08 16:17:41.459744",
+        "failed": true,
+        "msg": "non-zero return code",
+        "rc": 1,
+        "start": "2024-08-08 16:17:41.452218",
+        "stderr": "id: ‘expense’: no such user",
+        "stderr_lines": [
+            "id: ‘expense’: no such user"
+        ],
+        "stdout": "",
+        "stdout_lines": []
+    }
+}
+based on this json we have to check whether user exists or not.
 Ansible 26 video Quiz
 
 
