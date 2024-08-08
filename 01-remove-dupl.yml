@@ -1,0 +1,8 @@
+- name: remove duplicates
+  hosts: localhost
+  vars:
+    mylist: [1,2,3,4,3,5,5,6]
+  tasks:
+    - name: remove duplicates from lists
+      ansible.builtin.debug:
+        msg: "{{ mylist | unique }}"
