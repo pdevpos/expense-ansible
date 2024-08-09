@@ -502,7 +502,7 @@ here dictionary = map = key/value pair
          - postfix
 
    to install some packages and to remove some packages:
-   =====================================================
+   =====================================================(need to observe one more time)
 
     - name: install packages
         hosts: localhost
@@ -510,6 +510,7 @@ here dictionary = map = key/value pair
          - name: install multiple packages
            dnf: "{{item.name}}"
              state: "{{item.state}}"
+             autoremove: yes
 
            loop:
             - {name: 'mysql',state: 'latest'}
@@ -574,7 +575,15 @@ here dictionary = map = key/value pair
 
 
            to check mysql-server installed or not , filter:version
-
+register: mysql_connection_output:
+=================================
+ok: [db.pdevops72.online] => {
+    "msg": {
+        "changed": false,
+        "failed": true,
+        "msg": "unable to connect to database using pymysql 1.1.1, check login_user and login_password are correct or /root/.my.cnf has the credentials. Exception message: (1130, \"Host 'ip-172-31-40-8.ec2.internal' is not allowed to connect to this MySQL server\")"
+    }
+}
 
    * Ansible is developed in python.now we are connecting to mysql from ansible which is developed by python.
    * dependencies for python to connect mysql servers.
@@ -601,6 +610,79 @@ here dictionary = map = key/value pair
        * to check mysql installed or not use the following command in mysql remote hosts:
        =================================================================================
        mysql -h db.pdevops72.online -u root -pExpenseApp@1
+
+
+
+       backend.yml
+       ===========
+
+shell vs command module:
+========================
+shell module: it will use shell environment , means we can use redirections > ,pipes | and other shell variables.
+command module: it will just run the commands ,but can't use shell environment like > ,| and other shell variables.
+if a simple plain command without variable, then we can use command module.
+if you want to run shell script inside ansible or complex commands with redirections then we can use shell module.
+
+Ex:
+===
+shell-command.yml
+==================
+- name: command vs shell
+  hosts: localhost
+  tasks:
+  - name: execute command module
+    ansible.builtin.command: "echo ,'Hi, this is from command module' > /tmp/command.txt"
+
+  - name: execute shell module
+    ansible.builtin.command: "echo,'Hi this is from shell module' > /tmp/shell.txt"
+
+# simple commands without need of shell variables,environment and features like redirections,pipes and go for command module
+# if we need to run complex commands or scripts go for shell module.
+# whatever works in command module it will work in shell module but viceversa not possible.
+
+
+ansible.buitin.user : works for all distributions
+
+useradd / adduser
+if we use ansible modules we can automatically get idempotency nature.
+dnf module will work only Redhat family.
+
+backend.yaml:
+=============
+- name: configure backend server
+  hosts: localhost
+  become: yes
+  tasks:
+  - name: disable nodejs old version
+    ansible.builtin.command: dnf module disable nodejs -y
+
+  - name: enable nodejs new version
+    ansible.builtin.command: dnf module enable nodejs:20 -y
+
+    - name: add exepense user
+      ansible.builtin.user:
+        name: expense
+
+- name: make a directory
+  ansible.builtin.file:
+    path: /app
+    state: directory
+
+- name: Download backend code
+  ansible.builtin.get_url:
+    url: https://expense-artifacts.s3.amazonaws.com/expense-backend-v2.zip
+    dest: /tmp/backend.zip
+
+ - name: Unarchive backend code
+   ansible.builtin.unarchive:
+     src: /tmp/foo.zip  # by default checks in ansible server
+     dest: /app  # unarchive from ansible server to backend node server
+     remote_src: yes
+
+  - name: install dependencies
+    ansible.builtin.command: npm install
+    args:
+        chdir: /app
 
 
 
