@@ -700,6 +700,82 @@ backend.yaml:
   * to run specific tags through cmd line use:
   ansible-playbook db.yml --ask-vault-pass -t deployment.
 
+Ansible Dynamic Inventory:
+==========================
+there are  20 servers running based on traffic, you need to do some simple thing on emergency basis in all these servers.
+1. Query AWS EC2 instances.
+2.Query only specific instances based on project.
+3.Get their IP address
+4.Now connect.
+
+* click on IAM role
+* click on users
+* create user button
+* enter username---> click on Next
+* click on attach policy directly
+* click on "Administrator access"
+* click on "Next"
+* click on "create user"
+* click on security credentials
+* click on "Access keys"
+* select command line radio button
+* click on Next
+* click on Access key
+* copy Access key and secret access key
+configure:
+==========
+* aws configure
+* enter "Access key"
+* then enter "secret access key"
+Default region name: us-east-1
+Default output format: press enter
+* aws s3 ls
+
+* aws_ec2.yml:
+==============
+plugin:
+regions:
+- us-east-1
+
+run below cmd:
+==============
+ansible-inventory -i demo.aws_ec2.yml --graph
+
+to connect ansible to AWS use some depnedencies
+AWS botocore and boto3
+* pip3.9 install boto3 botocore
+
+to get specific instance from aws to ansible
+keyed_groups.
+instance name starts with backend.
+
+
+code:
+=====
+aws_ec2.yaml:
+=============
+plugin: amazon.aws.aws_ec2
+regions:
+- us-east-1
+keyed_groups:
+- key: tags['Name']
+  prefix: ''
+  parent_group: ''
+
+filters:
+  tag:Name: "Backend*"
+compose:
+  ansible_host: private_ip_address
+to run with the below command
+ansible-inventory -i demo.aws_ec2.yml --graph
+  Access keys credentials:
+  ========================
+  Access key: AKIAQTJSZBXUF64XZLC4
+
+ Secret Access key: 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
+ * The above keys will work only for scripting not for aws console.
+ 
+
 
 
 
