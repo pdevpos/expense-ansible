@@ -774,6 +774,10 @@ ansible-inventory -i demo.aws_ec2.yml --graph
 
  Secret Access key: HviCCX4X7YO8KcykD0TLAr4wYpEB9QmelEWd1kIw
  * The above keys will work only for scripting not for aws console.
+
+
+ * botocore
+ * boto3
  
 
 
