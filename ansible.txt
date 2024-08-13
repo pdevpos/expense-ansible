@@ -686,6 +686,24 @@ backend.yaml:
 
 
 
+  * How to run a playbook with a specific tasks?how can achieve that?
+  Ansible tags:
+  ==============
+  * to run a specific tasks ....
+  * - name: download code
+      ansible.builtin.get_url:
+        tag:
+         - deployment
+        url:
+        dest:
+
+  * to run specific tags through cmd line use:
+  ansible-playbook db.yml --ask-vault-pass -t deployment.
+
+
+
+
+
 
 
 
